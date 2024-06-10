@@ -11,7 +11,7 @@ const Signup = () => {
       
     <div className='login-container h-1'>
     <div className="img">
-       <img src={signupImg} alt="" />
+       <img style={{height:"90vh"}} src={signupImg} alt="" />
    </div>
        <div className="p-5 mt-5 gap-3">
        <>
