@@ -7,7 +7,7 @@ import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth'
 import {CgSpinner} from "react-icons/cg"
 import {auth} from "./firebase.config"
 import toast, { Toaster } from 'react-hot-toast'
-
+import OtpInput from 'otp-input-react'
 
 const Login = () => {
 
@@ -16,6 +16,7 @@ const Login = () => {
   const [otp,setOtp]=useState("") 
   const [loading,setLoading]=useState(false) 
   const [showOtp,setShowOtp]=useState(true)
+  const navigate =useNavigate()
 
   function onCaptchaVerify(){
     if(!window.recaptchaVerifier){
@@ -63,22 +64,25 @@ signInWithPhoneNumber(auth, formatPh, appVerifier)
 function backLogin(){
   setShowOtp(true)
 }
+function logout(){
+  setUser(null)
+}
   return (
     <>
     <Toaster toastOptions={{duration: 4000}}/>
     {
       user ?
       <div className='d-flex justify-center items-center  w-50 '>
-        <div style={{padding:"50px",margin:"200px"}} className='d-flex flex-col border justify-center items-center bg-slate-300  rounded-lg' > <h2>23525552654</h2>
+        <div style={{padding:"50px",margin:"200px"}} className='d-flex flex-col border justify-center items-center bg-slate-300  rounded-lg' > <h2>{user}</h2>
         
-          <button className='btn btn-primary '>Logout</button>
+          <button onClick={logout} className='btn btn-primary '>Logout</button>
            
         </div>
       </div>
          :
        <div className='login-container h-1'>
         <div className="p-5 mt-5 gap-3">
-          {showOtp ?  <>
+          {!showOtp ?  <>
           <h2 className='mt-5'>Login</h2>
             <p className='mb-3 text-secondary'>Login to access your travelwise account</p>
             <PhoneInput className='mb-3' country={"in"} value={phone} onChange={(phone)=>setPhone("+" + phone)} />
@@ -92,7 +96,8 @@ function backLogin(){
           <a onClick={backLogin}href=""><p>Back to login</p></a>
             <h2 className='mt-5'>Verify code</h2>
             <p className='mb-3 text-secondary'>An authentication code has been sent to your number</p>
-            <input onChange type="text" className='form-control' placeholder='Enter the code '/><br />
+            <OtpInput OTPLength={4} otpType="number" disabled={false} autoFocus className="d-flex justify-between gap-2 rounded-lg bg-slate-200 p-3"></OtpInput>
+            {/* <input  type="text" className='form-control' placeholder='Enter the code '/><br /> */}
             <div className='d-flex justify-content-center'>
             <p>Dont get the code? <span class="text-danger">Resend</span> </p>
         </div>
